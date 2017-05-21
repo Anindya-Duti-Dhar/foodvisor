@@ -2,8 +2,6 @@ package foodvisor.com.foodvisor;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -14,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,7 +19,7 @@ import foodvisor.com.foodvisor.adapter.RestaurantItemAdapter;
 import foodvisor.com.foodvisor.model.RestaurantItem;
 import foodvisor.com.foodvisor.utils.ItemClickSupport;
 
-public class ItemOneFragment extends Fragment {
+public class FeedsFragment extends Fragment {
     //Defining Variables
     ArrayList<RestaurantItem> restaurantItems;
     RecyclerView mRecyclerView;
@@ -33,8 +30,8 @@ public class ItemOneFragment extends Fragment {
     RelativeLayout mLoadingProgress;
     ImageView mNoInternet;
 
-    public static ItemOneFragment newInstance() {
-        ItemOneFragment fragment = new ItemOneFragment();
+    public static FeedsFragment newInstance() {
+        FeedsFragment fragment = new FeedsFragment();
         return fragment;
     }
 

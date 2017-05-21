@@ -90,16 +90,16 @@ public class Home extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    ItemOneFragment ItemOneFragment = new ItemOneFragment();
+                    FeedsFragment ItemOneFragment = new FeedsFragment();
                     return ItemOneFragment;
                 case 1:
-                    ItemTwoFragment ItemTwoFragment = new ItemTwoFragment();
+                    BookmarkFragment ItemTwoFragment = new BookmarkFragment();
                     return ItemTwoFragment;
                 case 2:
-                    ItemThreeFragment ItemThreeFragment = new ItemThreeFragment();
+                    HistoryFragment ItemThreeFragment = new HistoryFragment();
                     return ItemThreeFragment;
                 case 3:
-                    ItemFourFragment ItemFourFragment = new ItemFourFragment();
+                    AccountFragment ItemFourFragment = new AccountFragment();
                     return ItemFourFragment;
                 default:
                     return null;

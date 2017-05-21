@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class ItemTwoFragment extends Fragment {
-    public static ItemTwoFragment newInstance() {
-        ItemTwoFragment fragment = new ItemTwoFragment();
+public class BookmarkFragment extends Fragment {
+    public static BookmarkFragment newInstance() {
+        BookmarkFragment fragment = new BookmarkFragment();
         return fragment;
     }
 
@@ -34,7 +34,7 @@ public class ItemTwoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.viewpager, EachRestaurant.newInstance());
+                transaction.replace(R.id.viewpager, RestaurantDetails.newInstance());
                 transaction.commit();
             }
         });

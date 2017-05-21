@@ -36,6 +36,4 @@ dependencies {
     // load image from server
     compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
-    // footer nav
-    compile 'com.aurelhubert:ahbottomnavigation:2.0.6'
 }

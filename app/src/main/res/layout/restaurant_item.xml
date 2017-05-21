@@ -118,7 +118,7 @@
                     android:layout_height="16dp"
                     android:scaleType="fitCenter"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_action_access_alarm"/>
+                    android:src="@drawable/ic_action_time"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -140,7 +140,7 @@
                     android:layout_marginLeft="16dp"
                     android:scaleType="fitCenter"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_action_add_alert"/>
+                    android:src="@drawable/ic_action_dish"/>
 
                 <TextView
                     android:layout_width="wrap_content"
