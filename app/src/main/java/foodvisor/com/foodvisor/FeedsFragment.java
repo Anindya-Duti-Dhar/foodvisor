@@ -21,6 +21,7 @@ import foodvisor.com.foodvisor.utils.ItemClickSupport;
 
 public class FeedsFragment extends Fragment {
     //Defining Variables
+    private static final String TAG = FeedsFragment.class.getSimpleName();
     ArrayList<RestaurantItem> restaurantItems;
     RecyclerView mRecyclerView;
     RestaurantItemAdapter adapter;

@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class HistoryFragment extends Fragment {
+
+    private static final String TAG = HistoryFragment.class.getSimpleName();
     public static HistoryFragment newInstance() {
         HistoryFragment fragment = new HistoryFragment();
         return fragment;

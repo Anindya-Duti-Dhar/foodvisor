@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class BookmarkFragment extends Fragment {
+    private static final String TAG = BookmarkFragment.class.getSimpleName();
     public static BookmarkFragment newInstance() {
         BookmarkFragment fragment = new BookmarkFragment();
         return fragment;

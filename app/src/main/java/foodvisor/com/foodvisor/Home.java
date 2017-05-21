@@ -39,10 +39,10 @@ public class Home extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("Latest"));
-        tabLayout.addTab(tabLayout.newTab().setText("Dress"));
-        tabLayout.addTab(tabLayout.newTab().setText("Footwear"));
-        tabLayout.addTab(tabLayout.newTab().setText("Watch"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.home_tab_selector));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.bookmark_tab_selector));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.history_tab_selector));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.account_tab_selector));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         // initialize view pager

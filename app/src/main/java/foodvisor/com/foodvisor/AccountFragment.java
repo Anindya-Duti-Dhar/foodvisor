@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class AccountFragment extends Fragment {
+    private static final String TAG = AccountFragment.class.getSimpleName();
     public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
         return fragment;
