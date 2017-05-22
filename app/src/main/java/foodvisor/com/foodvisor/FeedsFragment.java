@@ -159,7 +159,7 @@ public class FeedsFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            String restURL = "http://woocommerce.cloudaccess.host/wp-json/wc/v2/products/?categories";
+            String restURL = "http://woocommerce.cloudaccess.host/wp-json/wc/v2/products/categories";
             OAuthService service = new ServiceBuilder()
                     .provider(WooCommerceApi.class)
                     .apiKey("ck_4e14689b6cb44beec1f2b5fa307c7c131ab54f57")  //Your Consumer key
@@ -198,13 +198,10 @@ public class FeedsFragment extends Fragment {
             JSONObject jsonObj = jsonArr.getJSONObject(i);
             String id = jsonObj.getString("id").toString();
             CategoryName = jsonObj.getString("name");
-            String subdata = jsonObj.getString("images");
-            JSONArray json_data1 = new JSONArray(subdata);
-            for (int j = 0; j < json_data1.length(); j++) {
-                jsonObj = json_data1.getJSONObject(j);
-                CategoryImage = jsonObj.getString("src");
-            }
-            Log.d("Category Details: ", "ID:: " + id + " Name:: " + CategoryName + " ImageUrl:: " + CategoryImage);
+            String subdata = jsonObj.getString("image");
+            JSONObject jsonObj2 = new JSONObject(subdata);
+            CategoryImage = jsonObj2.getString("src");
+            Log.d("Category Details: ", "ID:: " + id + "\nName:: " + CategoryName + "\nImageUrl:: " + CategoryImage);
             CategoryItem categoryItem = new CategoryItem();
             categoryItem.setCategoryName(CategoryName);
             categoryItem.setImageUrl(CategoryImage);
@@ -219,7 +216,7 @@ public class FeedsFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            String restURL = "http://woocommerce.cloudaccess.host/wp-json/wc/v2/products?";
+            String restURL = "http://woocommerce.cloudaccess.host/wp-json/wc/v2/products";
             OAuthService service = new ServiceBuilder()
                     .provider(WooCommerceApi.class)
                     .apiKey("ck_4e14689b6cb44beec1f2b5fa307c7c131ab54f57")  //Your Consumer key
@@ -260,6 +257,8 @@ public class FeedsFragment extends Fragment {
             RestaurantName = jsonObj.getString("name");
             String price = jsonObj.getString("price");
             String weight = jsonObj.getString("weight");
+            String server_description = jsonObj.getString("description");
+            String description = server_description.replaceAll("<p>", "").replaceAll("</p>", "");
             String average_rating = jsonObj.getString("average_rating");
             String subdata = jsonObj.getString("images");
             JSONArray json_data1 = new JSONArray(subdata);
@@ -267,10 +266,11 @@ public class FeedsFragment extends Fragment {
                 jsonObj = json_data1.getJSONObject(j);
                 RestaurantImage = jsonObj.getString("src");
             }
-            Log.d("Restaurant Details: ", "ID:: " + id + "\nName:: " + RestaurantName + "\nImageUrl:: " + RestaurantImage+"\nPrice:: "+price+"\nAvarage Rating:: "+average_rating+"\nMinutes:: "+weight);
+            Log.d("Restaurant Details: ", "ID:: " + id + "\nName:: " + RestaurantName + "\nDescription:: " + description + "\nImageUrl:: " + RestaurantImage + "\nPrice:: " + price + "\nAvarage Rating:: " + average_rating + "\nMinutes:: " + weight);
             RestaurantItem restaurantItem = new RestaurantItem();
             restaurantItem.setProductName(RestaurantName);
             restaurantItem.setProductId(id);
+            restaurantItem.setProductDescription(description);
             restaurantItem.setProductDistance(weight);
             restaurantItem.setProductRating(average_rating);
             restaurantItem.setProductPrice(price);

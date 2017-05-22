@@ -10,7 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="168dp"
         android:scaleType="fitXY"
-        android:padding="4dp"
+        android:padding="1dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/restaurant_item_image_bg"
         android:layout_gravity="center"
         android:src="@drawable/kfc"/>
 

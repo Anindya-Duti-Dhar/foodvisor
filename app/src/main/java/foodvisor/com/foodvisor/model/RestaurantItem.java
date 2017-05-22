@@ -21,6 +21,16 @@ public class RestaurantItem {
         this.product_name = product_name;
     }
 
+    String product_description;
+
+    public String getProductDescription() {
+        return product_description;
+    }
+
+    public void setProductDescription(String product_description) {
+        this.product_description = product_description;
+    }
+
     String product_rating;
 
     public String getProductRating() {
