@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/green_theme"
+        android:background="@color/white"
+        app:titleTextColor="@color/blue"
         android:minHeight="?attr/actionBarSize"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -37,7 +38,7 @@
                 android:maxLines="1"
                 android:scrollHorizontally="true"
                 android:ellipsize="end"
-                android:textColor="@color/yellow"
+                android:textColor="@color/trans_black_75"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
 
@@ -62,7 +63,7 @@
         android:layout_height="48dp"
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
-        android:background="@color/green_theme"
+        android:background="@color/white"
         android:elevation="5dp"
         app:tabGravity="fill"
         android:foreground="?android:attr/selectableItemBackground"

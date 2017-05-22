@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -23,6 +24,7 @@ public class RestaurantItemAdapter extends RecyclerView.Adapter<RestaurantItemAd
 
         public ImageView restaurant_image, restaurant_online;
         public TextView restaurant_name, user_restaurant_rating, restaurant_distance, restaurant_cost;
+        public RatingBar restaurantRatingBar;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -32,6 +34,7 @@ public class RestaurantItemAdapter extends RecyclerView.Adapter<RestaurantItemAd
             restaurant_online = (ImageView) itemView.findViewById(R.id.restaurant_online);
             restaurant_distance = (TextView) itemView.findViewById(R.id.restaurant_distance);
             restaurant_cost = (TextView) itemView.findViewById(R.id.restaurant_cost);
+            restaurantRatingBar = (RatingBar) itemView.findViewById(R.id.restaurantRatingBar);
         }
     }
 
@@ -45,23 +48,6 @@ public class RestaurantItemAdapter extends RecyclerView.Adapter<RestaurantItemAd
     public RestaurantItemAdapter(Context context, ArrayList<RestaurantItem> _data) {
         this._data = _data;
         mContext = context;
-
-        _data.add(0, getListItem("1", "KFC", "120", "45", "4.5", ""));
-        _data.add(1, getListItem("2", "BFC", "120", "45", "4.5", ""));
-        _data.add(2, getListItem("3", "CFC", "120", "45", "4.5", ""));
-        _data.add(3, getListItem("4", "FFC", "120", "45", "4.5", ""));
-        _data.add(4,getListItem("5", "AFC", "120", "45", "4.5", ""));
-    }
-
-    public RestaurantItem getListItem(String id, String name, String price, String distance, String rating, String image) {
-        RestaurantItem StaticItem = new RestaurantItem();
-        StaticItem.setProductId(id);
-        StaticItem.setProductName(name);
-        StaticItem.setProductPrice(price);
-        StaticItem.setProductDistance(distance);
-        StaticItem.setProductRating(rating);
-        StaticItem.setImageUrl(image);
-        return StaticItem;
     }
 
     @Override
@@ -83,15 +69,17 @@ public class RestaurantItemAdapter extends RecyclerView.Adapter<RestaurantItemAd
         ListPrice.setText("$"+data.getProductPrice());
 
         TextView ListDistance = viewHolder.restaurant_distance;
-        ListPrice.setText(data.getProductDistance()+"min");
+        ListDistance.setText(data.getProductDistance()+"min");
+
+        RatingBar ListRatingBar = viewHolder.restaurantRatingBar;
+        ListRatingBar.setRating(Float.parseFloat(data.getProductRating()));
 
         final ImageView ListFavourite = viewHolder.restaurant_online;
         ListFavourite.setImageResource(R.drawable.ic_online);
 
         ImageView ListImage = viewHolder.restaurant_image;
-        ListImage.setImageResource(R.drawable.kfc);
-        //Picasso.with(getContext())
-               // .load(data.getImageUrl()).noFade().into(ListImage);
+        Picasso.with(getContext())
+               .load(data.getImageUrl()).noFade().into(ListImage);
     }
 
     @Override

@@ -36,4 +36,6 @@ dependencies {
     // load image from server
     compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
+    // load woocommerce data
+    compile 'org.scribe:scribe:1.3.5'
 }
