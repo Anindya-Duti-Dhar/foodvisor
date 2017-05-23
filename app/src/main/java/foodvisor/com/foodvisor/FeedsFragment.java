@@ -4,13 +4,17 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +32,7 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import foodvisor.com.foodvisor.adapter.CategoryItemAdapter;
@@ -54,6 +59,10 @@ public class FeedsFragment extends Fragment {
 
     String CategoryImage, CategoryName, RestaurantName, RestaurantImage;
 
+    // BottomSheetBehavior variable
+    RelativeLayout mBottomSheeet;
+    private BottomSheetBehavior bottomSheetBehavior;
+
     public static FeedsFragment newInstance() {
         FeedsFragment fragment = new FeedsFragment();
         return fragment;
@@ -77,7 +86,14 @@ public class FeedsFragment extends Fragment {
         restaurantItems = new ArrayList<RestaurantItem>();
         categoryItems = new ArrayList<CategoryItem>();
 
+        mBottomSheeet = (RelativeLayout)view.findViewById(R.id.bottomSheetLayout);
+        bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottomSheetLayout));
+
         mFeedsParent = (RelativeLayout) view.findViewById(R.id.mFeedsParent);
+
+        initSheet();
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.restaurantRecycler);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -112,6 +128,7 @@ public class FeedsFragment extends Fragment {
                         RestaurantItem data = restaurantItems.get(position);
                         String name = data.getProductName();
                         Log.d("Restaurant Name: ", name);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                     }
                 }
         );
@@ -126,6 +143,54 @@ public class FeedsFragment extends Fragment {
                     }
                 }
         );
+    }
+
+    private void initSheet() {
+        // Capturing the callbacks for bottom sheet
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(View bottomSheet, int newState) {
+
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    Log.d(TAG, "collapse me");
+                    mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.white));
+                } else {
+                    Log.d(TAG, "expand me");
+                    mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.transparent));
+                }
+
+                // Check Logs to see how bottom sheets behaves
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        Log.d(TAG, "STATE_COLLAPSED");
+                        mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.transparent));
+                        break;
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        Log.d(TAG, "STATE_DRAGGING");
+                        mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.white));
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        Log.d(TAG, "STATE_EXPANDED");
+                        mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.white));
+                        break;
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        Log.d(TAG, "STATE_HIDDEN");
+                        mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.transparent));
+                        break;
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        Log.d(TAG, "STATE_SETTLING");
+                        mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.white));
+                        break;
+                }
+            }
+
+
+            @Override
+            public void onSlide(View bottomSheet, float slideOffset) {
+
+            }
+        });
+
     }
 
     // create snack bar
