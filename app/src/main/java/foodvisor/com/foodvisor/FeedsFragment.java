@@ -18,8 +18,13 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,8 +42,10 @@ import java.util.ArrayList;
 
 import foodvisor.com.foodvisor.adapter.CategoryItemAdapter;
 import foodvisor.com.foodvisor.adapter.RestaurantItemAdapter;
+import foodvisor.com.foodvisor.adapter.RestaurantMenuItemAdapter;
 import foodvisor.com.foodvisor.model.CategoryItem;
 import foodvisor.com.foodvisor.model.RestaurantItem;
+import foodvisor.com.foodvisor.model.RestaurantMenuItem;
 import foodvisor.com.foodvisor.utils.ItemClickSupport;
 import foodvisor.com.foodvisor.utils.NetworkChecking;
 import foodvisor.com.foodvisor.utils.WooCommerceApi;
@@ -48,10 +55,16 @@ public class FeedsFragment extends Fragment {
     private static final String TAG = FeedsFragment.class.getSimpleName();
     ArrayList<RestaurantItem> restaurantItems;
     ArrayList<CategoryItem> categoryItems;
-    RecyclerView mRecyclerView, mRecyclerView2;
-    StaggeredGridLayoutManager mStaggeredGridLayoutManager, mStaggeredGridLayoutManager2;
+    ArrayList<RestaurantMenuItem> restaurantMenuItems;
+    RecyclerView mRecyclerView, mRecyclerView2, mRecyclerView3;
+    StaggeredGridLayoutManager mStaggeredGridLayoutManager, mStaggeredGridLayoutManager2, mStaggeredGridLayoutManager3;
     RestaurantItemAdapter adapter;
     CategoryItemAdapter adapter2;
+    RestaurantMenuItemAdapter adapter3;
+
+    TextView mRestaurantDetailsName, mRestaurantDetailsDuration;
+    ImageView mRestaurantDetailsImage;
+    RatingBar mRestaurantDetailsRatingsBar;
 
     Snackbar snackbar;
     RelativeLayout mFeedsParent;
@@ -85,9 +98,20 @@ public class FeedsFragment extends Fragment {
 
         restaurantItems = new ArrayList<RestaurantItem>();
         categoryItems = new ArrayList<CategoryItem>();
+        restaurantMenuItems = new ArrayList<RestaurantMenuItem>();
 
         mBottomSheeet = (RelativeLayout)view.findViewById(R.id.bottomSheetLayout);
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottomSheetLayout));
+
+        mRestaurantDetailsName = (TextView)view.findViewById(R.id.restaurant_details_name);
+        mRestaurantDetailsDuration = (TextView)view.findViewById(R.id.restaurant_details_open_close);
+        mRestaurantDetailsImage = (ImageView)view.findViewById(R.id.restaurant_details_image);
+        mRestaurantDetailsRatingsBar = (RatingBar)view.findViewById(R.id.restauranDetailstRatingBar);
+
+        mRecyclerView3 = (RecyclerView) view.findViewById(R.id.restaurantItemRecycler);
+        mRecyclerView3.setNestedScrollingEnabled(false);
+        mStaggeredGridLayoutManager3 = new StaggeredGridLayoutManager(1, GridLayoutManager.VERTICAL);
+        mRecyclerView3.setLayoutManager(mStaggeredGridLayoutManager3);
 
         mFeedsParent = (RelativeLayout) view.findViewById(R.id.mFeedsParent);
 
@@ -127,8 +151,13 @@ public class FeedsFragment extends Fragment {
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                         RestaurantItem data = restaurantItems.get(position);
                         String name = data.getProductName();
+                        String duration = data.getProductDescription();
+                        String imageURL = data.getImageUrl();
+                        String ratings = data.getProductRating();
                         Log.d("Restaurant Name: ", name);
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        initMenuItemList();
+                        setRestaurantData(name, duration, imageURL, ratings);
                     }
                 }
         );
@@ -140,6 +169,18 @@ public class FeedsFragment extends Fragment {
                         CategoryItem data = categoryItems.get(position);
                         String name = data.getCategoryName();
                         Log.d("Category Name: ", name);
+                    }
+                }
+        );
+
+        ItemClickSupport.addTo(mRecyclerView3).setOnItemClickListener(
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        RestaurantMenuItem data = restaurantMenuItems.get(position);
+                        String name = data.getMenu_item_name();
+                        Log.d("Menu Item Name: ", name);
+                        Toast.makeText(getActivity(), name, Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -192,6 +233,20 @@ public class FeedsFragment extends Fragment {
         });
 
     }
+
+    public void initMenuItemList(){
+        adapter3 = new RestaurantMenuItemAdapter(getActivity(), restaurantMenuItems);
+        mRecyclerView3.setAdapter(adapter3);
+    }
+
+    public void setRestaurantData(String restaurantName, String duration, String imageURL, String ratings){
+        mRestaurantDetailsName.setText(restaurantName);
+        mRestaurantDetailsDuration.setText(duration);
+        Picasso.with(getContext())
+                .load(imageURL).noFade().into(mRestaurantDetailsImage);
+        mRestaurantDetailsRatingsBar.setRating(Float.parseFloat(ratings));
+    }
+
 
     // create snack bar
     public void CreateSnackBar() {

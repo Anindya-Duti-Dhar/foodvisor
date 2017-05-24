@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/add_to_favorite"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:background="@drawable/add_to_favorite"
+            android:text="ADD TO FAVORITE"
+            android:textColor="@color/grey"
+            android:gravity="left|center_vertical"
+            android:textSize="11sp"
+            android:paddingLeft="8dp"
+            android:drawablePadding="8dp"
+            android:drawableLeft="@android:drawable/ic_menu_camera"/>
+
+        <Button
+            android:id="@+id/view_reviews"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:background="@drawable/view_reviews_bg"
+            android:text="VIEW REVIEWS"
+            android:textSize="11sp"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/white"
+            android:paddingLeft="8dp"
+            android:drawablePadding="8dp"
+            android:drawableLeft="@android:drawable/ic_menu_camera"/>
+
+    </LinearLayout>
+
+</LinearLayout>
