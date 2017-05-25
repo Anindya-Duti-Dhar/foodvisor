@@ -23,7 +23,7 @@ public class BookmarkFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_item_two, container, false);
+        return inflater.inflate(R.layout.bookmark_fragment, container, false);
     }
 
     @Override

@@ -50,6 +50,10 @@ import foodvisor.com.foodvisor.utils.ItemClickSupport;
 import foodvisor.com.foodvisor.utils.NetworkChecking;
 import foodvisor.com.foodvisor.utils.WooCommerceApi;
 
+import static foodvisor.com.foodvisor.Home.mDetailsToolbarLayout;
+import static foodvisor.com.foodvisor.Home.mHomeToolbarLayout;
+import static foodvisor.com.foodvisor.Home.toolbar;
+
 public class FeedsFragment extends Fragment {
     //Defining Variables
     private static final String TAG = FeedsFragment.class.getSimpleName();
@@ -74,7 +78,7 @@ public class FeedsFragment extends Fragment {
 
     // BottomSheetBehavior variable
     RelativeLayout mBottomSheeet;
-    private BottomSheetBehavior bottomSheetBehavior;
+    public static BottomSheetBehavior bottomSheetBehavior;
 
     public static FeedsFragment newInstance() {
         FeedsFragment fragment = new FeedsFragment();
@@ -117,6 +121,8 @@ public class FeedsFragment extends Fragment {
 
         initSheet();
 
+        initMenuItemList();
+
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.restaurantRecycler);
@@ -155,8 +161,12 @@ public class FeedsFragment extends Fragment {
                         String imageURL = data.getImageUrl();
                         String ratings = data.getProductRating();
                         Log.d("Restaurant Name: ", name);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            toolbar.setBackgroundColor(getActivity().getColor(R.color.marun));
+                        }
+                        mHomeToolbarLayout.setVisibility(View.GONE);
+                        mDetailsToolbarLayout.setVisibility(View.VISIBLE);
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                        initMenuItemList();
                         setRestaurantData(name, duration, imageURL, ratings);
                     }
                 }
@@ -200,6 +210,10 @@ public class FeedsFragment extends Fragment {
                     mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.transparent));
                 }
 
+                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+
                 // Check Logs to see how bottom sheets behaves
                 switch (newState) {
                     case BottomSheetBehavior.STATE_COLLAPSED:
@@ -208,19 +222,35 @@ public class FeedsFragment extends Fragment {
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                         Log.d(TAG, "STATE_DRAGGING");
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            toolbar.setBackgroundColor(getActivity().getColor(R.color.white));
+                        }
+                        mHomeToolbarLayout.setVisibility(View.VISIBLE);
+                        mDetailsToolbarLayout.setVisibility(View.GONE);
                         mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.white));
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
                         Log.d(TAG, "STATE_EXPANDED");
                         mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.white));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            toolbar.setBackgroundColor(getActivity().getColor(R.color.marun));
+                        }
+                        mHomeToolbarLayout.setVisibility(View.GONE);
+                        mDetailsToolbarLayout.setVisibility(View.VISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_HIDDEN:
                         Log.d(TAG, "STATE_HIDDEN");
-                        mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.transparent));
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            toolbar.setBackgroundColor(getActivity().getColor(R.color.white));
+                        }
+                        mHomeToolbarLayout.setVisibility(View.VISIBLE);
+                        mDetailsToolbarLayout.setVisibility(View.GONE);
                         break;
                     case BottomSheetBehavior.STATE_SETTLING:
-                        Log.d(TAG, "STATE_SETTLING");
                         mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.white));
+                        Log.d(TAG, "STATE_SETTLING");
                         break;
                 }
             }

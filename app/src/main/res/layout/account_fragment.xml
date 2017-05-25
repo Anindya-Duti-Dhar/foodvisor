@@ -4,19 +4,12 @@
     android:layout_height="match_parent"
     tools:context=".AccountFragment">
 
-    <ImageView
-        android:id="@+id/truiton_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/ic_launcher"/>
-
     <TextView
+        android:id="@+id/action_text_demo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/truiton_image"
-        android:layout_centerHorizontal="true"
-        android:text="Fragment 4"
+        android:layout_centerInParent="true"
+        android:text="My Account"
         android:textSize="30sp"/>
 
 </RelativeLayout>

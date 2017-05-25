@@ -3,11 +3,14 @@ package foodvisor.com.foodvisor;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -15,10 +18,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+
+import static foodvisor.com.foodvisor.FeedsFragment.bottomSheetBehavior;
 
 public class Home extends AppCompatActivity {
 
@@ -26,6 +34,12 @@ public class Home extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     String CurntStatus;
+    MaterialSpinner spinner;
+    public static Toolbar toolbar;
+    public static RelativeLayout mHomeToolbarLayout, mDetailsToolbarLayout;
+    private static final String[] LOCATION = {
+            "Dhaka, Banani", "Dhaka, Mirpur", "Dhaka, Gulshan"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +53,49 @@ public class Home extends AppCompatActivity {
         tintManager.setTintColor(Color.parseColor("#de4256"));
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.home_tab_selector));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.bookmark_tab_selector));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.history_tab_selector));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.account_tab_selector));
+        //tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.account_tab_selector));
+        tabLayout.addTab(tabLayout.newTab().setText("Home").setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.home_tab_selector,null)));
+        tabLayout.addTab(tabLayout.newTab().setText("Saved").setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.bookmark_tab_selector,null)));
+        tabLayout.addTab(tabLayout.newTab().setText("History").setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.history_tab_selector,null)));
+        tabLayout.addTab(tabLayout.newTab().setText("Account").setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.account_tab_selector,null)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        mHomeToolbarLayout = (RelativeLayout)findViewById(R.id.home_toolbar_layout);
+        mDetailsToolbarLayout = (RelativeLayout)findViewById(R.id.details_toolbar_layout);
+        ImageView backButton = (ImageView)findViewById(R.id.back_arrow);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    toolbar.setBackgroundColor(Home.this.getColor(R.color.white));
+                }
+                mHomeToolbarLayout.setVisibility(View.VISIBLE);
+                mDetailsToolbarLayout.setVisibility(View.GONE);
+            }
+        });
+
+        // Location Spinner
+        spinner = (MaterialSpinner) findViewById(R.id.location_spinner);
+        spinner.setItems(LOCATION);
+        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+
+            }
+        });
+        spinner.setOnNothingSelectedListener(new MaterialSpinner.OnNothingSelectedListener() {
+
+            @Override public void onNothingSelected(MaterialSpinner spinner) {
+
+            }
+        });
 
         // initialize view pager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -67,6 +114,14 @@ public class Home extends AppCompatActivity {
                 int Status = tab.getPosition();
                 CurntStatus = String.valueOf(Status);
                 Log.d("Home: ", CurntStatus);
+                if (CurntStatus.equals("0")||CurntStatus.equals("1")||CurntStatus.equals("2")||CurntStatus.equals("3")){
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        toolbar.setBackgroundColor(Home.this.getColor(R.color.white));
+                    }
+                    mHomeToolbarLayout.setVisibility(View.VISIBLE);
+                    mDetailsToolbarLayout.setVisibility(View.GONE);
+                }
             }
 
             @Override

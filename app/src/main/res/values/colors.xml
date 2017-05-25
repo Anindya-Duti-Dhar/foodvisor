@@ -14,6 +14,7 @@
     <color name="secondary_text_transparent_70">#B3727272</color>
 
     <color name="red">#FF0000</color>
+    <color name="soft_red">#de4256</color>
     <color name="marun">#DC4837</color>
     <color name="pink">#FF4081</color>
     <color name="purple">#9C27B0</color>

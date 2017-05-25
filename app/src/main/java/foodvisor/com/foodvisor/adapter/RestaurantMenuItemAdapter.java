@@ -42,13 +42,14 @@ public class RestaurantMenuItemAdapter extends RecyclerView.Adapter<RestaurantMe
         this._data = _data;
         mContext = context;
 
-        _data.add(0, getListItem("Salad", R.drawable.salad));
-        _data.add(1, getListItem("Salad", R.drawable.salad));
-        _data.add(2, getListItem("Salad", R.drawable.salad));
-        _data.add(3, getListItem("Salad", R.drawable.salad));
-        _data.add(4, getListItem("Salad", R.drawable.salad));
-        _data.add(5, getListItem("Salad", R.drawable.salad));
-        _data.add(6, getListItem("Salad", R.drawable.salad));
+        _data.add(0, getListItem("Mixed Salad", R.drawable.salad));
+        _data.add(1, getListItem("Chicken Fry", R.drawable.chicken));
+        _data.add(2, getListItem("Fish Fry", R.drawable.fish));
+        _data.add(3, getListItem("Chicken Burger", R.drawable.burger));
+        _data.add(4, getListItem("Mixed Vegetables", R.drawable.veg));
+        _data.add(5, getListItem("Chicken Pasta", R.drawable.pasta));
+        _data.add(6, getListItem("Spicy Pizza", R.drawable.pizza));
+        _data.add(7, getListItem("Spicy Noodles", R.drawable.nuduls));
     }
 
     public RestaurantMenuItem getListItem(String title, int imageSource) {

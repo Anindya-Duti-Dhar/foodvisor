@@ -15,34 +15,109 @@
         android:layout_alignParentTop="true"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
-        app:titleTextColor="@color/blue"
+        app:titleTextColor="@color/trans_black_75"
         android:minHeight="?attr/actionBarSize"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-        <LinearLayout
-            android:id="@+id/toolbar_layout"
+        <RelativeLayout
+            android:id="@+id/home_toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:layout_centerVertical="true"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:gravity="left|center"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="match_parent"
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/location_spinner"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:gravity="left"
-                android:text="Foods"
-                android:maxLines="1"
-                android:scrollHorizontally="true"
-                android:ellipsize="end"
+                app:ms_dropdown_max_height="350dp"
+                app:ms_dropdown_height="wrap_content"
+                android:hint="Dhaka, Banani"
                 android:textColor="@color/trans_black_75"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="left|center"
+                android:gravity="left|center"
+                android:layout_alignParentLeft="true"/>
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true">
+
+                <ImageView
+                    android:id="@+id/search_icon_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:padding="4dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:src="@drawable/ic_action_action_search"/>
+
+                <ImageView
+                    android:id="@+id/filter_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:padding="4dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:src="@drawable/ic_action_image_details"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/details_toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:gravity="left|center"
+            android:background="@color/marun"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/back_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:padding="4dp"
+                android:layout_gravity="center_vertical|right"
+                android:src="@drawable/ic_action_hardware_keyboard_backspace"/>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true">
+
+                <ImageView
+                    android:id="@+id/about_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:padding="4dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:src="@drawable/ic_action_image_filter_vintage"/>
+
+                <ImageView
+                    android:id="@+id/search_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:padding="4dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:src="@drawable/ic_action_action_search_white"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
@@ -60,12 +135,14 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="60dp"
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:elevation="5dp"
         app:tabGravity="fill"
+        app:tabSelectedTextColor="@color/marun"
+        app:tabTextColor="@color/white"
         android:foreground="?android:attr/selectableItemBackground"
         app:tabIndicatorColor="@color/white"
         app:tabIndicatorHeight="2dp"
