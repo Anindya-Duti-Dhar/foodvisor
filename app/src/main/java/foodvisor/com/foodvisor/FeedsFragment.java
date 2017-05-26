@@ -48,6 +48,7 @@ import foodvisor.com.foodvisor.model.RestaurantItem;
 import foodvisor.com.foodvisor.model.RestaurantMenuItem;
 import foodvisor.com.foodvisor.utils.ItemClickSupport;
 import foodvisor.com.foodvisor.utils.NetworkChecking;
+import foodvisor.com.foodvisor.utils.PrefManager;
 import foodvisor.com.foodvisor.utils.WooCommerceApi;
 
 import static foodvisor.com.foodvisor.Home.mDetailsToolbarLayout;
@@ -66,7 +67,7 @@ public class FeedsFragment extends Fragment {
     CategoryItemAdapter adapter2;
     RestaurantMenuItemAdapter adapter3;
 
-    TextView mRestaurantDetailsName, mRestaurantDetailsDuration;
+    TextView mRestaurantDetailsName, mRestaurantDetailsDuration, mRestaurantDetailsRatings;
     ImageView mRestaurantDetailsImage;
     RatingBar mRestaurantDetailsRatingsBar;
 
@@ -110,6 +111,7 @@ public class FeedsFragment extends Fragment {
         mRestaurantDetailsName = (TextView)view.findViewById(R.id.restaurant_details_name);
         mRestaurantDetailsDuration = (TextView)view.findViewById(R.id.restaurant_details_open_close);
         mRestaurantDetailsImage = (ImageView)view.findViewById(R.id.restaurant_details_image);
+        mRestaurantDetailsRatings = (TextView) view.findViewById(R.id.restaurant_details_rating);
         mRestaurantDetailsRatingsBar = (RatingBar)view.findViewById(R.id.restauranDetailstRatingBar);
 
         mRecyclerView3 = (RecyclerView) view.findViewById(R.id.restaurantItemRecycler);
@@ -142,15 +144,6 @@ public class FeedsFragment extends Fragment {
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
 
-        // Initializing Internet Check
-        if (NetworkChecking.hasConnection(getActivity())) {
-            new CategoryAsyncTask().execute();
-        } else {
-            // if there is no internet
-            // Create Snack bar message
-            CreateSnackBar();
-        }
-
         ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(
                 new ItemClickSupport.OnItemClickListener() {
                     @Override
@@ -167,6 +160,7 @@ public class FeedsFragment extends Fragment {
                         mHomeToolbarLayout.setVisibility(View.GONE);
                         mDetailsToolbarLayout.setVisibility(View.VISIBLE);
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        PrefManager.setItemOpened(getActivity(), "Yes");
                         setRestaurantData(name, duration, imageURL, ratings);
                     }
                 }
@@ -242,6 +236,7 @@ public class FeedsFragment extends Fragment {
                     case BottomSheetBehavior.STATE_HIDDEN:
                         Log.d(TAG, "STATE_HIDDEN");
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        PrefManager.setItemOpened(getActivity(), "No");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             toolbar.setBackgroundColor(getActivity().getColor(R.color.white));
                         }
@@ -274,6 +269,7 @@ public class FeedsFragment extends Fragment {
         mRestaurantDetailsDuration.setText(duration);
         Picasso.with(getContext())
                 .load(imageURL).noFade().into(mRestaurantDetailsImage);
+        mRestaurantDetailsRatings.setText(ratings);
         mRestaurantDetailsRatingsBar.setRating(Float.parseFloat(ratings));
     }
 
@@ -429,5 +425,16 @@ public class FeedsFragment extends Fragment {
         }
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Initializing Internet Check
+        if (NetworkChecking.hasConnection(getActivity())) {
+            new CategoryAsyncTask().execute();
+        } else {
+            // if there is no internet
+            // Create Snack bar message
+            CreateSnackBar();
+        }
+    }
 }

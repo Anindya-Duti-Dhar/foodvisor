@@ -1,6 +1,8 @@
 package foodvisor.com.foodvisor;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -11,8 +13,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -25,6 +29,8 @@ import android.widget.TextView;
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+
+import foodvisor.com.foodvisor.utils.PrefManager;
 
 import static foodvisor.com.foodvisor.FeedsFragment.bottomSheetBehavior;
 
@@ -114,7 +120,7 @@ public class Home extends AppCompatActivity {
                 int Status = tab.getPosition();
                 CurntStatus = String.valueOf(Status);
                 Log.d("Home: ", CurntStatus);
-                if (CurntStatus.equals("0")||CurntStatus.equals("1")||CurntStatus.equals("2")||CurntStatus.equals("3")){
+                if (CurntStatus.equals("1")||CurntStatus.equals("2")||CurntStatus.equals("3")){
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         toolbar.setBackgroundColor(Home.this.getColor(R.color.white));
@@ -172,4 +178,38 @@ public class Home extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (PrefManager.getItemOpened(Home.this).equals("Yes")){
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    toolbar.setBackgroundColor(Home.this.getColor(R.color.white));
+                }
+                mHomeToolbarLayout.setVisibility(View.VISIBLE);
+                mDetailsToolbarLayout.setVisibility(View.GONE);
+        }
+        else {
+            showExitDialogToUser(Home.this);
+        }
+    }
+
+    // Create Dialog popup for Exit action
+    public void showExitDialogToUser(final Context context){
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder
+                .setMessage(getString(R.string.exit_message))
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                            Home.this.finish();
+                    }
+                });
+        alertDialogBuilder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        final AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
 }

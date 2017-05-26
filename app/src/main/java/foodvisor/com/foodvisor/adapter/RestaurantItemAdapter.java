@@ -71,6 +71,9 @@ public class RestaurantItemAdapter extends RecyclerView.Adapter<RestaurantItemAd
         TextView ListDistance = viewHolder.restaurant_distance;
         ListDistance.setText(data.getProductDistance()+"min");
 
+        TextView ListRating = viewHolder.user_restaurant_rating;
+        ListRating.setText(data.getProductRating());
+
         RatingBar ListRatingBar = viewHolder.restaurantRatingBar;
         ListRatingBar.setRating(Float.parseFloat(data.getProductRating()));
 
