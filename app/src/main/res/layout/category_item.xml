@@ -13,8 +13,8 @@
         android:padding="1dp"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
-        android:background="@drawable/restaurant_item_image_bg"
+        android:background="@drawable/rent_item_image_bg"
         android:layout_gravity="center"
-        android:src="@drawable/kfc"/>
+        android:src="@drawable/rent"/>
 
 </LinearLayout>

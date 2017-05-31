@@ -5,15 +5,15 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/deeporange</item>
+        <item name="colorAccent">@color/marun</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimaryDark">@color/secondary_text_transparent_70</item>
+        <item name="colorPrimaryDark">@color/marun</item>
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
-        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlNormal">@color/marun</item>
     </style>
 
     <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">

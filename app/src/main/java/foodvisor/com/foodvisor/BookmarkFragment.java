@@ -34,9 +34,9 @@ public class BookmarkFragment extends Fragment {
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.viewpager, RestaurantDetails.newInstance());
-                transaction.commit();
+                //FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                //transaction.replace(R.id.viewpager, RestaurantDetails.newInstance());
+                //transaction.commit();
             }
         });
 

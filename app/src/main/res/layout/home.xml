@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
+        android:background="@color/marun"
         app:titleTextColor="@color/trans_black_75"
         android:minHeight="?attr/actionBarSize"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -26,18 +26,24 @@
             android:layout_marginRight="16dp"
             android:layout_centerVertical="true"
             android:gravity="left|center"
+            android:visibility="visible"
             android:orientation="horizontal">
 
             <com.jaredrummler.materialspinner.MaterialSpinner
                 android:id="@+id/location_spinner"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
+                app:ms_background_color="@color/marun"
+                app:ms_text_color="@color/white"
+                app:ms_arrow_tint="@color/white"
                 app:ms_dropdown_max_height="350dp"
                 app:ms_dropdown_height="wrap_content"
                 android:hint="Dhaka, Banani"
-                android:textColor="@color/trans_black_75"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="14sp"
+                android:textAlignment="center"
+                android:background="@color/marun"
                 android:layout_marginRight="5dp"
                 android:layout_gravity="left|center"
                 android:gravity="left|center"
@@ -53,19 +59,10 @@
                     android:id="@+id/search_icon_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:padding="4dp"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="8dp"
                     android:layout_gravity="center_vertical|right"
-                    android:src="@drawable/ic_action_action_search"/>
-
-                <ImageView
-                    android:id="@+id/filter_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:padding="4dp"
-                    android:layout_gravity="center_vertical|right"
-                    android:src="@drawable/ic_action_image_details"/>
+                    android:src="@drawable/ic_action_action_search_white"/>
 
             </LinearLayout>
 
@@ -78,6 +75,7 @@
             android:layout_marginRight="16dp"
             android:layout_centerVertical="true"
             android:gravity="left|center"
+            android:visibility="gone"
             android:background="@color/marun"
             android:orientation="horizontal">
 
@@ -96,15 +94,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_alignParentRight="true">
-
-                <ImageView
-                    android:id="@+id/about_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:padding="4dp"
-                    android:layout_gravity="center_vertical|right"
-                    android:src="@drawable/ic_action_image_filter_vintage"/>
 
                 <ImageView
                     android:id="@+id/search_icon"
@@ -135,7 +124,7 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="48dp"
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
         android:background="@color/white"

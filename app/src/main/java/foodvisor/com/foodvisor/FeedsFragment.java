@@ -7,18 +7,22 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,14 +41,13 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import foodvisor.com.foodvisor.adapter.CategoryItemAdapter;
-import foodvisor.com.foodvisor.adapter.RestaurantItemAdapter;
+import foodvisor.com.foodvisor.adapter.RentItemAdapter;
 import foodvisor.com.foodvisor.adapter.RestaurantMenuItemAdapter;
 import foodvisor.com.foodvisor.model.CategoryItem;
-import foodvisor.com.foodvisor.model.RestaurantItem;
+import foodvisor.com.foodvisor.model.RentItem;
 import foodvisor.com.foodvisor.model.RestaurantMenuItem;
 import foodvisor.com.foodvisor.utils.ItemClickSupport;
 import foodvisor.com.foodvisor.utils.NetworkChecking;
@@ -58,28 +61,37 @@ import static foodvisor.com.foodvisor.Home.toolbar;
 public class FeedsFragment extends Fragment {
     //Defining Variables
     private static final String TAG = FeedsFragment.class.getSimpleName();
-    ArrayList<RestaurantItem> restaurantItems;
+    ArrayList<RentItem> rentItems;
     ArrayList<CategoryItem> categoryItems;
-    ArrayList<RestaurantMenuItem> restaurantMenuItems;
-    RecyclerView mRecyclerView, mRecyclerView2, mRecyclerView3;
-    StaggeredGridLayoutManager mStaggeredGridLayoutManager, mStaggeredGridLayoutManager2, mStaggeredGridLayoutManager3;
-    RestaurantItemAdapter adapter;
+    RecyclerView mRecyclerView, mRecyclerView2;
+    StaggeredGridLayoutManager mStaggeredGridLayoutManager, mStaggeredGridLayoutManager2;
+    RentItemAdapter adapter;
     CategoryItemAdapter adapter2;
-    RestaurantMenuItemAdapter adapter3;
 
-    TextView mRestaurantDetailsName, mRestaurantDetailsDuration, mRestaurantDetailsRatings;
-    ImageView mRestaurantDetailsImage;
-    RatingBar mRestaurantDetailsRatingsBar;
+    TextView mRentDetailsName, mRentDetailsCost, mRentDetailsAddress, mRentDescription, mRentUploader, mRentUploadedAt;
+    ImageView mRentDetailsImage;
 
     Snackbar snackbar;
     RelativeLayout mFeedsParent;
     private ProgressDialog mProgressDialog;
 
-    String CategoryImage, CategoryName, RestaurantName, RestaurantImage;
+    SwipeRefreshLayout refreshLayout;
+
+    FloatingActionButton fab;
+    LinearLayout mRentDetailsLayout, mRentPostLayout;
+
+    String CategoryImage, CategoryName, RentName, RentImage;
+    String cat_id;
 
     // BottomSheetBehavior variable
     RelativeLayout mBottomSheeet;
     public static BottomSheetBehavior bottomSheetBehavior;
+
+    // add post variable
+    TextInputLayout inputLayoutPostName, inputLayoutLocation, inputLayoutCost, inputLayoutDescription;
+    EditText input_post_name, input_location, input_cost, input_description;
+    Button _postButton;
+    String PostNameByUser, CostByUser, LocationByUser, DescriptionByUser;
 
     public static FeedsFragment newInstance() {
         FeedsFragment fragment = new FeedsFragment();
@@ -101,31 +113,47 @@ public class FeedsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        restaurantItems = new ArrayList<RestaurantItem>();
+        rentItems = new ArrayList<RentItem>();
         categoryItems = new ArrayList<CategoryItem>();
-        restaurantMenuItems = new ArrayList<RestaurantMenuItem>();
 
-        mBottomSheeet = (RelativeLayout)view.findViewById(R.id.bottomSheetLayout);
+        mBottomSheeet = (RelativeLayout) view.findViewById(R.id.bottomSheetLayout);
         bottomSheetBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottomSheetLayout));
+        mRentDetailsLayout = (LinearLayout) view.findViewById(R.id.rent_details_layout);
+        mRentPostLayout = (LinearLayout) view.findViewById(R.id.add_post_layout);
 
-        mRestaurantDetailsName = (TextView)view.findViewById(R.id.restaurant_details_name);
-        mRestaurantDetailsDuration = (TextView)view.findViewById(R.id.restaurant_details_open_close);
-        mRestaurantDetailsImage = (ImageView)view.findViewById(R.id.restaurant_details_image);
-        mRestaurantDetailsRatings = (TextView) view.findViewById(R.id.restaurant_details_rating);
-        mRestaurantDetailsRatingsBar = (RatingBar)view.findViewById(R.id.restauranDetailstRatingBar);
-
-        mRecyclerView3 = (RecyclerView) view.findViewById(R.id.restaurantItemRecycler);
-        mRecyclerView3.setNestedScrollingEnabled(false);
-        mStaggeredGridLayoutManager3 = new StaggeredGridLayoutManager(1, GridLayoutManager.VERTICAL);
-        mRecyclerView3.setLayoutManager(mStaggeredGridLayoutManager3);
+        mRentDetailsName = (TextView) view.findViewById(R.id.rent_details_name);
+        mRentDetailsAddress = (TextView) view.findViewById(R.id.rent_Details_address_data);
+        mRentUploader = (TextView) view.findViewById(R.id.rent_uploader_name);
+        mRentUploadedAt = (TextView) view.findViewById(R.id.rent_post_time);
+        mRentDetailsCost = (TextView) view.findViewById(R.id.rent_details_cost_data);
+        mRentDescription = (TextView) view.findViewById(R.id.rent_description_data);
+        mRentDetailsImage = (ImageView) view.findViewById(R.id.rent_details_image);
 
         mFeedsParent = (RelativeLayout) view.findViewById(R.id.mFeedsParent);
 
         initSheet();
 
-        initMenuItemList();
-
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        inputLayoutPostName = (TextInputLayout) view.findViewById(R.id.inputLayoutPostName);
+        inputLayoutCost = (TextInputLayout) view.findViewById(R.id.inputLayoutCost);
+        inputLayoutLocation = (TextInputLayout) view.findViewById(R.id.inputLayoutLocation);
+        inputLayoutDescription = (TextInputLayout) view.findViewById(R.id.inputLayoutDescription);
+
+        input_post_name = (EditText) view.findViewById(R.id.input_post_name);
+        input_cost = (EditText) view.findViewById(R.id.input_cost);
+        input_location = (EditText) view.findViewById(R.id.input_location);
+        input_description = (EditText) view.findViewById(R.id.input_description);
+
+        _postButton = (Button) view.findViewById(R.id.btn_post);
+        _postButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mProgressDialog.show();
+                // go to post method
+                post();
+            }
+        });
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.restaurantRecycler);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -144,15 +172,43 @@ public class FeedsFragment extends Fragment {
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
 
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
+        refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
+        // pull to refresh method
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // load available streams
+                // Initializing Internet Check
+                if (NetworkChecking.hasConnection(getActivity())) {
+                    //clear the array list first
+                    rentItems.clear();
+                    // auto load available post
+                    new CategoryAsyncTask().execute();
+                } else {
+                    // if there is no internet
+                    // stop pull to refresh
+                    refreshLayout.setRefreshing(false);
+                    // Create Snack bar message
+                    CreateSnackBar();
+                }
+            }
+        });
+
         ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(
                 new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        RestaurantItem data = restaurantItems.get(position);
-                        String name = data.getProductName();
-                        String duration = data.getProductDescription();
+                        mRentPostLayout.setVisibility(View.GONE);
+                        mRentDetailsLayout.setVisibility(View.VISIBLE);
+                        RentItem data = rentItems.get(position);
+                        String name = data.getRentName();
+                        String address = data.getRentShortDescription();
+                        String cost = data.getRentCost();
+                        String description = data.getRentDescription();
+                        String uploader_name = data.getRentUploader();
+                        String uploaded_at = data.getRentUploadedAt();
                         String imageURL = data.getImageUrl();
-                        String ratings = data.getProductRating();
                         Log.d("Restaurant Name: ", name);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             toolbar.setBackgroundColor(getActivity().getColor(R.color.marun));
@@ -161,7 +217,7 @@ public class FeedsFragment extends Fragment {
                         mDetailsToolbarLayout.setVisibility(View.VISIBLE);
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         PrefManager.setItemOpened(getActivity(), "Yes");
-                        setRestaurantData(name, duration, imageURL, ratings);
+                        setRentData(name, address, cost, description, uploader_name, uploaded_at, imageURL);
                     }
                 }
         );
@@ -177,18 +233,156 @@ public class FeedsFragment extends Fragment {
                 }
         );
 
-        ItemClickSupport.addTo(mRecyclerView3).setOnItemClickListener(
-                new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        RestaurantMenuItem data = restaurantMenuItems.get(position);
-                        String name = data.getMenu_item_name();
-                        Log.d("Menu Item Name: ", name);
-                        Toast.makeText(getActivity(), name, Toast.LENGTH_LONG).show();
-                    }
+
+        // initializing floating action button
+        fab = (FloatingActionButton) view.findViewById(R.id.post_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRentPostLayout.setVisibility(View.VISIBLE);
+                mRentDetailsLayout.setVisibility(View.GONE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    toolbar.setBackgroundColor(getActivity().getColor(R.color.marun));
                 }
-        );
+                mHomeToolbarLayout.setVisibility(View.GONE);
+                mDetailsToolbarLayout.setVisibility(View.VISIBLE);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                PrefManager.setItemOpened(getActivity(), "Yes");
+            }
+        });
+
     }
+
+    public void post() {
+        Log.d(TAG, "Login");
+
+        if (!validate()) {
+            onPostFailed();
+            return;
+        }
+        PostNameByUser = input_post_name.getText().toString();
+        CostByUser = input_cost.getText().toString();
+        LocationByUser = input_location.getText().toString();
+        DescriptionByUser = input_description.getText().toString();
+        // add new post
+        new PostAsyncTask().execute();
+    }
+
+    public void onPostFailed() {
+        mProgressDialog.hide();
+        toast(getString(R.string.post_failed_message));
+        _postButton.setEnabled(true);
+    }
+
+    public boolean validate() {
+        boolean valid = true;
+
+        String postName = input_post_name.getText().toString();
+        String cost = input_cost.getText().toString();
+        String location = input_location.getText().toString();
+        String description = input_description.getText().toString();
+
+        if (postName.isEmpty() || postName.length() > 256) {
+            input_post_name.setError(getString(R.string.valid_postName));
+            valid = false;
+        } else {
+            input_post_name.setError(null);
+        }
+
+        if (cost.isEmpty() || cost.length() > 6) {
+            input_cost.setError(getString(R.string.valid_cost));
+            valid = false;
+        } else {
+            input_cost.setError(null);
+        }
+
+        if (location.isEmpty() || location.length() > 256) {
+            input_location.setError(getString(R.string.valid_location));
+            valid = false;
+        } else {
+            input_location.setError(null);
+        }
+
+        if (description.isEmpty() || description.length() > 1000) {
+            input_description.setError(getString(R.string.valid_description));
+            valid = false;
+        } else {
+            input_description.setError(null);
+        }
+
+        return valid;
+    }
+
+    private void toast(String text) {
+        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    private class PostAsyncTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            JSONObject requestObject = new JSONObject();
+            try {
+                requestObject.put("name", PostNameByUser);
+                requestObject.put("regular_price", CostByUser);
+                requestObject.put("short_description", LocationByUser);
+                requestObject.put("description", DescriptionByUser);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String restURL = "http://rent.cloudaccess.host/wp-json/wc/v2/products";    //"http://woocommerce.cloudaccess.host/wp-json/wc/v2/products?";
+            OAuthService service = new ServiceBuilder()
+                    .provider(WooCommerceApi.class)
+                    .apiKey("ck_627665256e4d308cd75cab04631110ecfa6d1ecd")  //Your Consumer key   //ck_4e14689b6cb44beec1f2b5fa307c7c131ab54f57
+                    .apiSecret("cs_cdcc9613c38ab63c9137afdc7211e3d80b065889")   //Your Consumer secret   //cs_32d6111d7da5082ad5dbb384478d38d2c4f2ea56
+                    .scope("API.Public") //fixed
+                    .signatureType(SignatureType.QueryString)
+                    .build();
+            String payload = requestObject.toString();
+            OAuthRequest request = new OAuthRequest(Verb.POST, restURL);
+            request.addHeader("Content-Type", "application/json");
+            request.addPayload(payload);
+            Token accessToken = new Token("", ""); //not required for context.io
+            service.signRequest(accessToken, request);
+            Response response = request.send();
+            String data3 = response.getBody();
+            Log.d("OAuthTask", response.getBody());
+            try {
+                parseJSON3(data3);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (response.getCode() != 201) {
+                onPostFailed();
+            }
+            int responseCode = response.getCode();
+            Log.d("ResponseCode:: ", String.valueOf(responseCode));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            mProgressDialog.dismiss();
+        }
+    }
+
+    public void parseJSON3(String data) throws JSONException {
+        JSONArray jsonArr = new JSONArray(data);
+        for (int i = 0; i < jsonArr.length(); i++) {
+            JSONObject jsonObj = jsonArr.getJSONObject(i);
+            String id = jsonObj.getString("id").toString();
+            String postName = jsonObj.getString("name");
+            String cost = jsonObj.getString("price");
+            String location = jsonObj.getString("short_description");
+            String description = jsonObj.getString("description");
+            Log.d("Post details: ", "ID:: " + id + "\nName:: " + postName + "\nCost:: " + cost + "\nLocation:: " + location + "\nDescription:: " + description);
+        }
+    }
+
 
     private void initSheet() {
         // Capturing the callbacks for bottom sheet
@@ -213,12 +407,14 @@ public class FeedsFragment extends Fragment {
                     case BottomSheetBehavior.STATE_COLLAPSED:
                         Log.d(TAG, "STATE_COLLAPSED");
                         mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.transparent));
+                        fab.show();
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                         Log.d(TAG, "STATE_DRAGGING");
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                        fab.hide();
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            toolbar.setBackgroundColor(getActivity().getColor(R.color.white));
+                            toolbar.setBackgroundColor(getActivity().getColor(R.color.marun));
                         }
                         mHomeToolbarLayout.setVisibility(View.VISIBLE);
                         mDetailsToolbarLayout.setVisibility(View.GONE);
@@ -226,6 +422,7 @@ public class FeedsFragment extends Fragment {
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
                         Log.d(TAG, "STATE_EXPANDED");
+                        fab.hide();
                         mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.white));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             toolbar.setBackgroundColor(getActivity().getColor(R.color.marun));
@@ -235,15 +432,18 @@ public class FeedsFragment extends Fragment {
                         break;
                     case BottomSheetBehavior.STATE_HIDDEN:
                         Log.d(TAG, "STATE_HIDDEN");
+                        fab.show();
                         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                         PrefManager.setItemOpened(getActivity(), "No");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            toolbar.setBackgroundColor(getActivity().getColor(R.color.white));
+                            toolbar.setBackgroundColor(getActivity().getColor(R.color.marun));
                         }
                         mHomeToolbarLayout.setVisibility(View.VISIBLE);
                         mDetailsToolbarLayout.setVisibility(View.GONE);
                         break;
                     case BottomSheetBehavior.STATE_SETTLING:
+                        fab.hide();
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                         mBottomSheeet.setBackgroundColor(getResources().getColor(R.color.white));
                         Log.d(TAG, "STATE_SETTLING");
                         break;
@@ -259,18 +459,15 @@ public class FeedsFragment extends Fragment {
 
     }
 
-    public void initMenuItemList(){
-        adapter3 = new RestaurantMenuItemAdapter(getActivity(), restaurantMenuItems);
-        mRecyclerView3.setAdapter(adapter3);
-    }
-
-    public void setRestaurantData(String restaurantName, String duration, String imageURL, String ratings){
-        mRestaurantDetailsName.setText(restaurantName);
-        mRestaurantDetailsDuration.setText(duration);
+    public void setRentData(String rentName, String address, String rentCost, String rentDescription, String uploader, String uploaded_at, String imageURL) {
+        mRentDetailsName.setText(rentName);
+        mRentDetailsAddress.setText(address);
+        mRentDetailsCost.setText(rentCost+" Taka/Month");
+        mRentDescription.setText(rentDescription);
         Picasso.with(getContext())
-                .load(imageURL).noFade().into(mRestaurantDetailsImage);
-        mRestaurantDetailsRatings.setText(ratings);
-        mRestaurantDetailsRatingsBar.setRating(Float.parseFloat(ratings));
+                .load(imageURL).noFade().into(mRentDetailsImage);
+        mRentUploader.setText(uploader);
+        mRentUploadedAt.setText(uploaded_at + " Days ago");
     }
 
 
@@ -305,7 +502,7 @@ public class FeedsFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            String restURL = "http://woocommerce.cloudaccess.host/wp-json/wc/v2/products/categories";
+            String restURL = "http://woocommerce.cloudaccess.host/wp-json/wc/v2/products/categories?";
             OAuthService service = new ServiceBuilder()
                     .provider(WooCommerceApi.class)
                     .apiKey("ck_4e14689b6cb44beec1f2b5fa307c7c131ab54f57")  //Your Consumer key
@@ -362,11 +559,11 @@ public class FeedsFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            String restURL = "http://woocommerce.cloudaccess.host/wp-json/wc/v2/products";
+            String restURL = "http://rent.cloudaccess.host/wp-json/wc/v2/products?";      //"http://woocommerce.cloudaccess.host/wp-json/wc/v2/products?";
             OAuthService service = new ServiceBuilder()
                     .provider(WooCommerceApi.class)
-                    .apiKey("ck_4e14689b6cb44beec1f2b5fa307c7c131ab54f57")  //Your Consumer key
-                    .apiSecret("cs_32d6111d7da5082ad5dbb384478d38d2c4f2ea56")   //Your Consumer secret
+                    .apiKey("ck_627665256e4d308cd75cab04631110ecfa6d1ecd")  //Your Consumer key   //ck_4e14689b6cb44beec1f2b5fa307c7c131ab54f57
+                    .apiSecret("cs_cdcc9613c38ab63c9137afdc7211e3d80b065889")   //Your Consumer secret   //cs_32d6111d7da5082ad5dbb384478d38d2c4f2ea56
                     .scope("API.Public") //fixed
                     .signatureType(SignatureType.QueryString)
                     .build();
@@ -390,38 +587,42 @@ public class FeedsFragment extends Fragment {
             //update your listView adapter here
             //Dismiss your dialog
             mProgressDialog.hide();
-            adapter = new RestaurantItemAdapter(getActivity(), restaurantItems);
+            refreshLayout.setRefreshing(false);
+            adapter = new RentItemAdapter(getActivity(), rentItems);
             mRecyclerView.setAdapter(adapter);
         }
     }
 
-    public void parseJSON2(String data) throws JSONException {
+    private void parseJSON2(String data) throws JSONException {
         JSONArray jsonArr = new JSONArray(data);
         for (int i = 0; i < jsonArr.length(); i++) {
             JSONObject jsonObj = jsonArr.getJSONObject(i);
             String id = jsonObj.getString("id").toString();
-            RestaurantName = jsonObj.getString("name");
-            String price = jsonObj.getString("price");
-            String weight = jsonObj.getString("weight");
+            RentName = jsonObj.getString("name");
+            String cost = jsonObj.getString("price");
+            String server_short_description = jsonObj.getString("short_description");
+            String short_description = server_short_description.replaceAll("<p>", "").replaceAll("</p>", "");
             String server_description = jsonObj.getString("description");
             String description = server_description.replaceAll("<p>", "").replaceAll("</p>", "");
-            String average_rating = jsonObj.getString("average_rating");
+            String uploader = jsonObj.getString("slug");
+            String time = jsonObj.getString("weight");
             String subdata = jsonObj.getString("images");
             JSONArray json_data1 = new JSONArray(subdata);
             for (int j = 0; j < json_data1.length(); j++) {
                 jsonObj = json_data1.getJSONObject(j);
-                RestaurantImage = jsonObj.getString("src");
+                RentImage = jsonObj.getString("src");
             }
-            Log.d("Restaurant Details: ", "ID:: " + id + "\nName:: " + RestaurantName + "\nDescription:: " + description + "\nImageUrl:: " + RestaurantImage + "\nPrice:: " + price + "\nAvarage Rating:: " + average_rating + "\nMinutes:: " + weight);
-            RestaurantItem restaurantItem = new RestaurantItem();
-            restaurantItem.setProductName(RestaurantName);
-            restaurantItem.setProductId(id);
-            restaurantItem.setProductDescription(description);
-            restaurantItem.setProductDistance(weight);
-            restaurantItem.setProductRating(average_rating);
-            restaurantItem.setProductPrice(price);
-            restaurantItem.setImageUrl(RestaurantImage);
-            restaurantItems.add(restaurantItem);
+            Log.d("Rent Details: ", "ID:: " + id + "\nName:: " + RentName + "\nAddress:: " + short_description + "\nCost:: " + cost);
+            RentItem rentItem = new RentItem();
+            rentItem.setRentName(RentName);
+            rentItem.setRentId(id);
+            rentItem.setRentCost(cost);
+            rentItem.setRentShortDescription(short_description);
+            rentItem.setRentDescription(description);
+            rentItem.setRentUploader("Registered User");
+            rentItem.setRentUploadedAt(time);
+            rentItem.setImageUrl(RentImage);
+            rentItems.add(rentItem);
         }
     }
 

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheetLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="60dp"
+    android:background="@color/white"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
+
+            <!-- Post name Label -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inputLayoutPostName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="256"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/input_post_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:ems="256"
+                    android:ellipsize="end"
+                    android:scrollHorizontally="true"
+                    android:maxLines="1"
+                    android:hint="Post Title" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Location Label -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inputLayoutLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="256"
+                app:passwordToggleEnabled="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/input_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:ems="256"
+                    android:scrollHorizontally="true"
+                    android:maxLines="1"
+                    android:hint="Location"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Cost Label -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inputLayoutCost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="6"
+                app:passwordToggleEnabled="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/input_cost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="6"
+                    android:scrollHorizontally="true"
+                    android:maxLines="1"
+                    android:hint="Taka per month"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Description Label -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inputLayoutDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="1000"
+                app:passwordToggleEnabled="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/input_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:ems="1000"
+                    android:hint="Short Description"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Post Button -->
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_post"
+                android:layout_width="240dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"
+                android:layout_gravity="center_horizontal"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:background="@drawable/common_button_shape"
+                android:padding="12dp"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:text="Post"/>
+
+        </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </RelativeLayout>
+
+

@@ -24,7 +24,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 android:padding="1dp"
-                android:background="@drawable/restaurant_item_image_bg"
+                android:background="@drawable/rent_item_image_bg"
                 android:src="@drawable/salad"/>
 
         </RelativeLayout>

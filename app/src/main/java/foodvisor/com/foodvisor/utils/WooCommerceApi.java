@@ -13,7 +13,7 @@ public class WooCommerceApi extends DefaultApi10a {
 
     @Override
     public String getRequestTokenEndpoint() {
-        return "http://woocommerce.cloudaccess.host/wc-auth/authorize";
+        return "http://rent.cloudaccess.host/wc-auth/authorize";//"http://woocommerce.cloudaccess.host/wc-auth/authorize";
     }
 
     @Override

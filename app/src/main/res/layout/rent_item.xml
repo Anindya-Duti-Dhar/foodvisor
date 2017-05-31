@@ -19,13 +19,13 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/restaurant_image"
+                android:id="@+id/rent_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 android:padding="1dp"
-                android:background="@drawable/restaurant_item_image_bg"
-                android:src="@drawable/kfc"/>
+                android:background="@drawable/rent_item_image_bg"
+                android:src="@drawable/rent"/>
 
         </RelativeLayout>
 
@@ -45,8 +45,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/restaurant_name"
-                    android:text="Restaurant Name"
+                    android:id="@+id/rent_name"
+                    android:text="Rent Name"
                     android:maxLines="1"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
@@ -58,15 +58,6 @@
                     android:textColor="@color/primary_text"
                     android:textSize="15sp" />
 
-                <ImageView
-                    android:id="@+id/restaurant_online"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:scaleType="fitCenter"
-                    android:layout_marginTop="2dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_online"/>
-
             </LinearLayout>
 
             <LinearLayout
@@ -77,37 +68,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/user_restaurant_rating"
-                    android:text="4.5"
+                    android:id="@+id/rent_address"
+                    android:text="Road-10, Nikunja-2, Dhaka"
                     android:maxLines="1"
                     android:layout_marginLeft="4dp"
                     android:scrollHorizontally="true"
                     android:ellipsize="end"
                     android:textStyle="normal"
-                    android:textColor="@color/primary_text"
+                    android:textColor="@color/trans_black_75"
                     android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/base_restaurant_rating"
-                    android:text="/5"
-                    android:maxLines="1"
-                    android:scrollHorizontally="true"
-                    android:ellipsize="end"
-                    android:textStyle="normal"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="15sp" />
-
-                <RatingBar
-                    android:id="@+id/restaurantRatingBar"
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:theme="@style/RatingBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:numStars="5"
-                    android:isIndicator="false" />
 
             </LinearLayout>
 
@@ -117,41 +86,11 @@
                 android:layout_marginTop="4dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/restaurant_alarm"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_action_time"/>
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/restaurant_distance"
-                    android:text="4.5"
-                    android:maxLines="1"
-                    android:layout_marginLeft="4dp"
-                    android:scrollHorizontally="true"
-                    android:ellipsize="end"
-                    android:textStyle="normal"
-                    android:textColor="@color/primary_text"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/restaurant_alert"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_action_dish"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/restaurant_cost"
-                    android:text="45min"
+                    android:id="@+id/rent_cost"
+                    android:text="12000 Taka/Month"
                     android:maxLines="1"
                     android:layout_marginLeft="4dp"
                     android:scrollHorizontally="true"

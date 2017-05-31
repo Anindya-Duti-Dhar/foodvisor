@@ -1,9 +1,15 @@
 <resources>
-    <string name="app_name">FoodVisor</string>
+    <string name="app_name">Rent</string>
     <string name="no_internet_connection">No Internet Connection</string>
     <string name="retry">Retry</string>
     <string name="getting_ready">Getting Ready...</string>
     <string name="exit_message">Are you want to exit?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="post_failed_message">Add new post failed for wrong data</string>
+    <string name="valid_postName">Alphanumeric character up to 256</string>
+    <string name="valid_cost">Number up to 6 digits</string>
+    <string name="valid_location">Alphanumeric character up to 256</string>
+    <string name="valid_description">Alphanumeric character up to 1000</string>
+
 </resources>

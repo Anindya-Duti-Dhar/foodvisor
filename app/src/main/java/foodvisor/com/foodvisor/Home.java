@@ -44,7 +44,7 @@ public class Home extends AppCompatActivity {
     public static Toolbar toolbar;
     public static RelativeLayout mHomeToolbarLayout, mDetailsToolbarLayout;
     private static final String[] LOCATION = {
-            "Dhaka, Banani", "Dhaka, Mirpur", "Dhaka, Gulshan"
+            "Dhaka, Khilkhet", "Dhaka, Mirpur", "Dhaka, Gulshan", "Dhaka, Banani", "Dhaka, Baridhara",
     };
 
     @Override
@@ -64,11 +64,11 @@ public class Home extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        //tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.account_tab_selector));
-        tabLayout.addTab(tabLayout.newTab().setText("Home").setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.home_tab_selector,null)));
-        tabLayout.addTab(tabLayout.newTab().setText("Saved").setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.bookmark_tab_selector,null)));
-        tabLayout.addTab(tabLayout.newTab().setText("History").setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.history_tab_selector,null)));
-        tabLayout.addTab(tabLayout.newTab().setText("Account").setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.account_tab_selector,null)));
+        //tabLayout.addTab(tabLayout.newTab().setText("Account").setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.account_tab_selector,null)));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.home_tab_selector));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.bookmark_tab_selector));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.history_tab_selector));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.account_tab_selector));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         mHomeToolbarLayout = (RelativeLayout)findViewById(R.id.home_toolbar_layout);
@@ -80,7 +80,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    toolbar.setBackgroundColor(Home.this.getColor(R.color.white));
+                    toolbar.setBackgroundColor(Home.this.getColor(R.color.marun));
                 }
                 mHomeToolbarLayout.setVisibility(View.VISIBLE);
                 mDetailsToolbarLayout.setVisibility(View.GONE);
@@ -90,6 +90,9 @@ public class Home extends AppCompatActivity {
         // Location Spinner
         spinner = (MaterialSpinner) findViewById(R.id.location_spinner);
         spinner.setItems(LOCATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            spinner.setTextColor(Home.this.getColor(R.color.white));
+        }
         spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
@@ -123,7 +126,7 @@ public class Home extends AppCompatActivity {
                 if (CurntStatus.equals("1")||CurntStatus.equals("2")||CurntStatus.equals("3")){
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        toolbar.setBackgroundColor(Home.this.getColor(R.color.white));
+                        toolbar.setBackgroundColor(Home.this.getColor(R.color.marun));
                     }
                     mHomeToolbarLayout.setVisibility(View.VISIBLE);
                     mDetailsToolbarLayout.setVisibility(View.GONE);
@@ -183,7 +186,7 @@ public class Home extends AppCompatActivity {
         if (PrefManager.getItemOpened(Home.this).equals("Yes")){
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    toolbar.setBackgroundColor(Home.this.getColor(R.color.white));
+                    toolbar.setBackgroundColor(Home.this.getColor(R.color.marun));
                 }
                 mHomeToolbarLayout.setVisibility(View.VISIBLE);
                 mDetailsToolbarLayout.setVisibility(View.GONE);
