@@ -39,4 +39,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     // load woocommerce data
     compile 'org.scribe:scribe:1.3.5'
+    //firebase
+    compile 'com.google.firebase:firebase-auth:9.0.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

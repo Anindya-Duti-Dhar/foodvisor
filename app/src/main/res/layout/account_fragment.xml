@@ -12,4 +12,14 @@
         android:text="My Account"
         android:textSize="30sp"/>
 
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_margin="32dip"
+        android:layout_below="@id/action_text_demo"
+        android:background="@color/marun"
+        android:text="@string/btn_sign_out"
+        android:textColor="@android:color/white" />
+
 </RelativeLayout>
