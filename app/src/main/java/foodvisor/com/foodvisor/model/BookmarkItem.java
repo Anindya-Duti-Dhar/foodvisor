@@ -1,6 +1,9 @@
 package foodvisor.com.foodvisor.model;
 
-public class RentItem {
+
+
+public class BookmarkItem {
+
     String rent_id;
 
     public String getRentId() {
@@ -40,7 +43,6 @@ public class RentItem {
     public void setRentAddress(String rent_address) {
         this.rent_address = rent_address;
     }
-
 
     String rent_cost;
 
@@ -92,4 +94,5 @@ public class RentItem {
     }
 
     String imageUrl;
+
 }

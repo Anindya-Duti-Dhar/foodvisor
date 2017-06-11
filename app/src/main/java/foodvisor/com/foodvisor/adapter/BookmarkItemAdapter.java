@@ -7,18 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import foodvisor.com.foodvisor.R;
-import foodvisor.com.foodvisor.model.RentItem;
+import foodvisor.com.foodvisor.model.BookmarkItem;
 
+public class BookmarkItemAdapter extends RecyclerView.Adapter<BookmarkItemAdapter.ViewHolder> {
 
-public class RentItemAdapter extends RecyclerView.Adapter<RentItemAdapter.ViewHolder> {
+    static List<BookmarkItem> dbList;
+    private Context mContext;
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -27,37 +30,36 @@ public class RentItemAdapter extends RecyclerView.Adapter<RentItemAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            rent_name = (TextView) itemView.findViewById(R.id.rent_name);
-            rent_cost = (TextView) itemView.findViewById(R.id.rent_cost);
-            rent_address = (TextView) itemView.findViewById(R.id.rent_address);
-            rent_image = (ImageView) itemView.findViewById(R.id.rent_image);
+            rent_name = (TextView) itemView.findViewById(R.id.bookmark_name);
+            rent_cost = (TextView) itemView.findViewById(R.id.bookmark_cost);
+            rent_address = (TextView) itemView.findViewById(R.id.bookmark_address);
+            rent_image = (ImageView) itemView.findViewById(R.id.bookmark_image);
         }
     }
-
-    private ArrayList<RentItem> _data;
-    private Context mContext;
 
     private Context getContext() {
         return mContext;
     }
 
-    public RentItemAdapter(Context context, ArrayList<RentItem> _data) {
-        this._data = _data;
+    public BookmarkItemAdapter(Context context, List<BookmarkItem> dbList) {
+        this.dbList = new ArrayList<BookmarkItem>();
+        this.mContext = context;
         mContext = context;
+        this.dbList = dbList;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BookmarkItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View rentView = inflater.inflate(R.layout.rent_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(rentView);
+        View rentView = inflater.inflate(R.layout.bookmark_item, parent, false);
+        BookmarkItemAdapter.ViewHolder viewHolder = new BookmarkItemAdapter.ViewHolder(rentView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, int position) {
-        final RentItem data = _data.get(position);
+    public void onBindViewHolder(final BookmarkItemAdapter.ViewHolder viewHolder, int position) {
+        final BookmarkItem data = dbList.get(position);
         TextView ListTitle = viewHolder.rent_name;
         ListTitle.setText(data.getRentName());
 
@@ -69,12 +71,12 @@ public class RentItemAdapter extends RecyclerView.Adapter<RentItemAdapter.ViewHo
 
         ImageView ListImage = viewHolder.rent_image;
         Picasso.with(getContext())
-               .load(data.getImageUrl()).noFade().into(ListImage);
+                .load(data.getImageUrl()).noFade().into(ListImage);
     }
 
     @Override
     public int getItemCount() {
-        return _data.size();
+        return dbList.size();
     }
 
 }

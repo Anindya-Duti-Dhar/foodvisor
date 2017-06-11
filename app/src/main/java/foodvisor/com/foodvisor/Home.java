@@ -32,6 +32,7 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import foodvisor.com.foodvisor.utils.PrefManager;
 
+import static foodvisor.com.foodvisor.BookmarkFragment.bookmarkBottomSheetBehavior;
 import static foodvisor.com.foodvisor.FeedsFragment.bottomSheetBehavior;
 
 public class Home extends AppCompatActivity {
@@ -79,6 +80,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                bookmarkBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     toolbar.setBackgroundColor(Home.this.getColor(R.color.marun));
                 }
@@ -123,8 +125,9 @@ public class Home extends AppCompatActivity {
                 int Status = tab.getPosition();
                 CurntStatus = String.valueOf(Status);
                 Log.d("Home: ", CurntStatus);
-                if (CurntStatus.equals("1")||CurntStatus.equals("2")||CurntStatus.equals("3")){
+                if (CurntStatus.equals("0") || CurntStatus.equals("1")||CurntStatus.equals("2")||CurntStatus.equals("3")){
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    bookmarkBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         toolbar.setBackgroundColor(Home.this.getColor(R.color.marun));
                     }
@@ -185,6 +188,7 @@ public class Home extends AppCompatActivity {
     public void onBackPressed() {
         if (PrefManager.getItemOpened(Home.this).equals("Yes")){
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                bookmarkBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     toolbar.setBackgroundColor(Home.this.getColor(R.color.marun));
                 }
