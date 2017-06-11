@@ -32,6 +32,7 @@
             <com.jaredrummler.materialspinner.MaterialSpinner
                 android:id="@+id/location_spinner"
                 android:layout_width="160dp"
+                android:visibility="visible"
                 android:layout_height="wrap_content"
                 app:ms_background_color="@color/marun"
                 app:ms_text_color="@color/white"

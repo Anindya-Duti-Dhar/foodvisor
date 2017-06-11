@@ -55,6 +55,7 @@ import foodvisor.com.foodvisor.utils.NetworkChecking;
 import foodvisor.com.foodvisor.utils.PrefManager;
 import foodvisor.com.foodvisor.utils.WooCommerceApi;
 
+import static foodvisor.com.foodvisor.BookmarkFragment.bookmarkBottomSheetBehavior;
 import static foodvisor.com.foodvisor.Home.mDetailsToolbarLayout;
 import static foodvisor.com.foodvisor.Home.mHomeToolbarLayout;
 import static foodvisor.com.foodvisor.Home.toolbar;
@@ -360,6 +361,16 @@ public class FeedsFragment extends Fragment {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             mProgressDialog.dismiss();
+            input_cost.setText("");
+            input_post_name.setText("");
+            input_location.setText("");
+            input_description.setText("");
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                toolbar.setBackgroundColor(getActivity().getColor(R.color.marun));
+            }
+            mHomeToolbarLayout.setVisibility(View.VISIBLE);
+            mDetailsToolbarLayout.setVisibility(View.GONE);
         }
     }
 
@@ -470,6 +481,7 @@ public class FeedsFragment extends Fragment {
             public void onClick(View v) {
                 //insert bookmark
                 InsertBookmarkList(rentID, rentName, address, rentCost, rentDescription, uploader, uploaderMobile, uploaded_at, imageURL);
+                Toast.makeText(getActivity(),"Added to the bookmark",Toast.LENGTH_SHORT).show();
                 Intent cartItemDeleted = new Intent("addBookmarkItem");
                 cartItemDeleted.putExtra("bookmarkAdded", "Yes");
                 LocalBroadcastManager.getInstance(getContext()).sendBroadcast(cartItemDeleted);
@@ -477,7 +489,6 @@ public class FeedsFragment extends Fragment {
         });
 
     }
-
 
     // create snack bar
     public void CreateSnackBar() {

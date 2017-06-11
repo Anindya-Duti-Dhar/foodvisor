@@ -174,6 +174,27 @@ public class BookmarkFragment extends Fragment {
 
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            dbList = helper.getDataFromDB();
+            if (dbList.size() < 1) {
+                mNoBookmark.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
+            } else {
+                mNoBookmark.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+                adapter = new BookmarkItemAdapter(getActivity(), dbList);
+                mRecyclerView.setAdapter(adapter);
+                mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(1, GridLayoutManager.VERTICAL);
+                mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
+            }
+        }
+        else {
+        }
+    }
+
     private void initSheet() {
         // Capturing the callbacks for bottom sheet
         bookmarkBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -278,9 +299,12 @@ public class BookmarkFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-        // register receiver
+        // register all receiver
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mBroadcastReceiver,
                 new IntentFilter("deleteBookmarkItem"));
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mBroadcastReceiver,
+                new IntentFilter("addBookmarkItem"));
     }
 
     @Override
